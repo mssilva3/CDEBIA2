@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>Validação de CIE (Carteira de Identificação Estudantil)</title>
+    <meta name="description" content="Uma forma descomplicada de verificar a validade da Carteira de Identificação Estudantil (CIE), evitar fraudes e comprovar o cumprimento integral da Lei da Meia-entrada.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <script>
+        let menuVisibility = false;
+        let mouseOver = false;
+
+        function goHome() {
+            window.location.href = 'https://www.meiaentrada.org.br';
+        }
+
+        function switchMouseOver(mo) {
+            mouseOver = mo;
+        }
+
+        function switchDropdownMenu(n) {
+            let e = n.querySelector('.dropdown-list');
+
+            document.querySelectorAll('.dropdown-list').forEach(te => {
+                let isDifferent = te != e;
+
+                if(isDifferent){
+                    te.style.visibility = 'hidden';
+                }
+            })
+
+            if(e.style.visibility != 'visible'){
+                e.style.visibility = 'visible';
+                menuVisibility = true;
+            }else{
+                e.style.visibility = 'hidden';
+                menuVisibility = false;
+            }
+        }
+
+        function hideDropdownMenu() {
+            if(menuVisibility && !mouseOver){
+                document.querySelectorAll('.dropdown-list').forEach(e => {
+                    e.style.visibility = 'hidden';
+                })
+
+                menuVisibility = false;
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, Liberation Sans, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+        }
+
+        .menu-header {
+            background-color: #005e9e;
+            border-top: 5px solid #f2b035;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 85px;
+            width: 100%;
+            box-shadow: -1px 1px 5px rgba(0,0,0,0.5);
+            position: fixed;
+            top: 0px;
+            box-sizing: border-box;
+            padding: 0 27.6vw;
+        }
+
+        .menu-header img {
+            cursor: pointer;
+            height: 75px;
+        }
+
+        .menu-header .menu-buttons {
+            display: block;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .menu-header .menu-buttons a {
+            font-size: 18px;
+            text-decoration: none;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;
+            font-weight: 600;
+            padding-bottom: 10px;
+            margin-right: 10px;
+            user-select: none;
+        }
+
+        .menu-header .menu-buttons .dropdown-menu {
+            display: inline-block;
+            position: relative;
+            padding: 0;
+            margin: auto;
+            cursor: pointer;
+        }
+
+        .menu-header .menu-buttons .dropdown-menu a.dropdown {
+            position: relative;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        .menu-header .menu-buttons .dropdown-menu a.dropdown::after {
+            display: inline-block;
+            width: 0;
+            height: 0;
+            margin-left: .255em;
+            vertical-align: .255em;
+            content: "";
+            border-top: .3em solid;
+            border-right: .3em solid transparent;
+            border-left: .3em solid transparent;
+        }
+
+        .menu-header .menu-buttons .dropdown-menu .dropdown-list {
+            display: block;
+            position: absolute;
+            background-color: white;
+            border: 1px solid rgba(0, 0, 0, .15);
+            border-radius: .25em;
+            padding: .5rem 0px;
+            margin-top: 15px;
+            margin-left: -5px;
+            box-sizing: border-box;
+            min-width: 11rem;
+            visibility: hidden;
+        }
+
+        .menu-header .menu-buttons .dropdown-menu .dropdown-list a {
+            box-sizing: border-box;
+            display: block;
+            color: #212529;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: .8em;
+            padding: 10px 20px;
+            width: 100%;
+            user-select: none;
+        }
+
+        .menu-header .menu-buttons .dropdown-menu .dropdown-list a:hover {
+            background-color: #e9ecef;
+            text-decoration: none;
+        }
+
+        .menu-header .menu-buttons .dropdown-menu .dropdown-list a:active {
+            color: #fff;
+            text-decoration: none;
+            background-color: #007bff;
+        }
+
+        .menu-header .menu-hamburger {
+            display: none;
+        }
+
+        .spacer {
+            padding-top: 135px;
+        }
+
+        .page-title .lower-border {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .page-title h1 {
+            color: #005e9e;
+            font-weight: 500;
+            font-family: "Rubik", sans-serif;
+            margin: 0px 28vw;
+        }
+
+        .page-title h1 .small-title {
+            font-size: 25px;
+            font-weight: 400;
+            font-family: "Rubik", sans-serif;
+        }
+
+        .valid-document {
+            color: #155724;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            font-family: "Rubik", sans-serif;
+            border-radius: 3px;
+            font-weight: 450;
+            font-size: 25px;
+            text-align: center;
+            margin: 40px 28vw 10px 28vw;
+            padding: 30px 10px;
+        }
+
+        .texto-atestado {
+            font-size: 17px;
+            text-align: center;
+            margin: 20px 28vw;
+        }
+
+        .info-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px 28vw;
+        }
+
+        .info-section .info-text {
+            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;
+            width: 83%;
+        }
+        
+        .info-section .info-text .info-row {
+            display: block;
+            font-size: 18px;
+            padding: 10px 0px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .info-section .info-text .info-row:first-of-type {
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .info-section .info-text .info-row .info-header {
+            display: inline-block;
+            text-align: right;
+            width: 25%;
+            font-weight: 700;
+        }
+
+        .info-section .info-text .info-row .info-content {
+            display: inline-block;
+            margin-left: 20px;
+            font-weight: 400;
+        }
+
+        .info-section img {
+            width: 15%;
+            border-radius: 3px;
+        }
+
+        .pem-certificate {
+            margin: 20px 28vw;
+        }
+
+        .pem-certificate .pem-title {
+            margin-top: 25px;
+            margin-bottom: 5px;
+            display: inline-block;
+            font-size: 20px;
+            font-weight: 600;
+            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;
+        }
+
+        .pem-certificate .pem-text {
+            word-wrap: break-word;
+            padding: 0px 20px;
+            border: 1px solid rgba(0,0,0,0.2);
+            line-height: 23px;
+        }
+
+        .pem-certificate .pem-text span {
+            color: grey;
+            font-size: 15px;
+            display: block;
+            text-align: center;
+            margin: 10px auto;
+        }
+
+        .pem-certificate .pem-text span:nth-of-type(2) {
+            color: black;
+            font-size: 14px;
+            display: block;
+            text-align: justify;
+        }
+
+        .footer {
+            border-top: 5px solid #f2b035;
+            background-color: #222f40;
+            height: 24vh;
+            margin-top: 50px;
+            color: #f2b035;
+            padding: 0px 28vw;
+        }
+
+        .footer .footer-text {
+            display: block;
+            font-family: "Rubik", sans-serif;
+            font-size: 35px;
+            font-weight: 500;
+            color: white;
+            text-align: center;
+            margin: 35px auto;
+        }
+
+        .footer .footer-menu {
+            display: flex;
+            flex-direction: row;
+            align-items: start;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .footer .footer-menu .footer-column {
+            margin-right: 15%;
+            max-width: 250px;
+        }
+
+        .footer .footer-menu .footer-column a {
+            display: block;
+            text-decoration: none;
+            color: #f2b035;
+            margin-bottom: 15px;
+            font-size: 1em;
+        }
+
+        .footer .footer-rights {
+            box-sizing: border-box;
+            display: block;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        @media (max-width: 480px) {
+            .photo {
+                margin: 10px auto;
+            }
+
+            .menu-header {
+                padding: 0px 15px;
+            }
+
+            .menu-header img {
+                height: 75px;
+            }
+
+            .menu-header .menu-hamburger {
+                display: block;
+                color: #ffffff80;
+                padding: .25rem .75rem;
+                font-size: 1.25rem;
+                line-height: 1;
+                background: transparent;
+                border: 1px solid #ffffff1a;
+                border-radius: .25rem;
+            }
+
+            .menu-header .menu-hamburger .hamburger-icon {
+                background-image: url(hamburger.svg) !important;
+                display: inline-block;
+                width: 1.5em;
+                height: 1.5em;
+                vertical-align: middle;
+                content: "";
+                background: no-repeat 50%;
+                background-size: 100% 100%;
+            }
+
+            .menu-header .menu-buttons {
+                display: none;
+            }
+
+            .page-title h1 {
+                font-size: 27px;
+                margin: 0px 5vw;
+            }
+
+            .page-title h1 .small-title {
+                font-size: 22px;
+            }
+
+            .valid-document {
+                margin: 40px 4vw 10px 4vw;
+            }
+
+            .texto-atestado {
+                font-size: 15px;
+                margin: 20px 5vw;
+            }
+
+            .info-section {
+                flex-direction: column;
+                margin: 20px 5vw;
+            }
+
+            .info-section .info-text {
+                width: 100%;
+            }
+
+            .info-section img {
+                width: 60%;
+                margin: 30px auto;
+            }
+
+            .info-section .info-text .info-row .info-header {
+                font-size: 16px;
+                width: 100%;
+                text-align: left;
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            .info-section .info-text .info-row .info-content {
+                font-size: 16px;
+                display: block;
+                margin-left: 0px;
+            }
+
+            .pem-certificate {
+                margin: 0px 5vw;
+            }
+
+            .pem-certificate .pem-title {
+                margin-top: 0px;
+                text-align: center;
+            }
+
+            .pem-certificate .pem-text span {
+                font-size: 12px;
+            }
+
+            .pem-certificate .pem-text span:nth-of-type(2) {
+                font-size: 11px;
+            }
+
+            .footer {
+                height: 40vh;
+                padding: 0px 3.5vw;   
+            }
+
+            .footer .footer-text {
+                font-size: 30px;
+                font-weight: 500;
+                margin: 30px auto;
+            }
+
+            .footer .footer-menu {
+                flex-direction: column;
+                margin-bottom: 15px;
+            }
+
+            .footer .footer-menu .footer-column {
+                margin-right: 20%;
+                margin-left: 9%;
+            }
+
+            .footer .footer-menu .footer-column a {
+                margin-bottom: 14px;
+                font-size: 14px;
+            }
+
+            .footer .footer-rights {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body onclick="hideDropdownMenu()">
+    <div class="menu-header">
+        <img src="meiaentrada.svg" alt="meiaentrada.org" onclick="goHome()">
+        <div class="menu-hamburger">
+            <span class="hamburger-icon"></span>
+        </div>
+        <div class="menu-buttons">
+            <div class="dropdown-menu" onclick="switchDropdownMenu(this)" onmouseover="switchMouseOver(true)" onmouseout="switchMouseOver(false)">
+                <a class="dropdown">Lei da Meia-entrada</a>
+                <div class="dropdown-list">
+                    <a href="https://www.meiaentrada.org.br/lei">A Lei</a>
+                    <a href="https://www.meiaentrada.org.br/lei/padraonacional">Padrão Nacional</a>
+                    <a href="https://www.meiaentrada.org.br/lei/comocomunicar">Como Funciona</a>
+                </div>
+            </div>
+            <div class="dropdown-menu" onclick="switchDropdownMenu(this)" onmouseover="switchMouseOver(true)" onmouseout="switchMouseOver(false)">
+                <a class="dropdown">Validação</a>
+                <div class="dropdown-list">
+                    <a href="https://www.meiaentrada.org.br/validador/itens-de-seguranca">Itens de segurança</a>
+                </div>
+            </div>
+            <a href="https://www.meiaentrada.org.br/chaves-publicas">Chaves públicas</a>
+            <a href="https://www.meiaentrada.org.br/perguntas-e-respostas">FAQ</a>
+            <a href="https://www.meiaentrada.org.br/noticias">Notícias</a>
+        </div>
+    </div>
+    <div class="spacer"></div>
+    <div class="page-title">
+        <h1>Validação de CIE <span class="small-title">(Carteira de Identificação Estudantil)</span></h1>
+        <div class="lower-border">
+            <hr width="40%" size="5" color="#005e9e">
+            <hr width="32%" size="5" color="white">
+            <hr width="28%" size="5" color="#005e9e">
+        </div>
+    </div>
+    <div class="content">
+        <div class="valid-document">Documento válido!</div>
+        <div class="texto-atestado">UBES atesta que Beatriz Teixeira é estudante e está regularmente matriculado(a) em Administração na Universidade Paulista - UNIP</div>
+        <div class="info-section">
+            <div class="info-text">
+                <span class="info-row">
+                    <span class="info-header">Nome:</span>
+                    <span class="info-content">Beatriz Teixeira</span>
+                </span>
+                <span class="info-row">
+                    <span class="info-header">Instituição:</span>
+                    <span class="info-content">Universidade Paulista - UNIP</span>
+                </span>
+                <span class="info-row">
+                    <span class="info-header">Curso:</span>
+                    <span class="info-content">Administração</span>
+                </span>
+                <span class="info-row">
+                    <span class="info-header">Documento de Identificação:</span>
+                    <span class="info-content">0071932873882</span>
+                </span>
+                <span class="info-row">
+                    <span class="info-header">Emissor:</span>
+                    <span class="info-content">UBES</span>
+                </span>
+            </div>
+            <img src="foto3x4.png">
+        </div>
+        <div class="pem-certificate">
+            <span class="pem-title">Certificado de Atributo em formato PEM:</span>
+            <div class="pem-text">
+                <span>-----BEGIN CERTIFICATE-----</span>
+                <span>MIID2DCCAsACAQEwfqB8MHekdTBzMQswCQYDVQQGEwJCUjETMBEGA1UECgwKSUNQLUJyYXNpbDEuMCwGA1UECwwlQVNTT0NJQUNBTyBOQUNJT05BTCBERSBQT1MgR1JBRFVBTkRPUzEfMB0GA1UEAwwWUmF5c2EgZGUgT2xpdmVpcmEgRGlhcwIBAaCBuzCBuKSBtTCBsjELMAkGA1UEBhMCQlIxEzARBgNVBAoMCklDUC1CcmFzaWwxFzAVBgNVBAsMDjE0MTIxOTU3MDAwMTA5MQ4wDAYDVQQLDAVWQUxJRDEbMBkGA1UECwwSUGVzc29hIEp1cmlkaWNhIEEzMRgwFgYDVQQLDA9BQyBWQUxJRCBCUkFTSUwxLjAsBgNVBAMMJUFTU09DSUFDQU8gTkFDSU9OQUwgREUgUE9TIEdSQURVQU5ET1MwDQYJKoZIhvcNAQEFBQACBAClT8QwIhgPMjAyMjA3MDgxMzEwNDFaGA8yMDIzMDMzMTIzNTk1OVowgc0wRgYFYEwBCgExPRM7MDYwNzE5OTIwNDE5NDc0MjM0NjAwMDAwMDAyMTAzMTk5NzAwMDE2NzQ5NDkyMDAxOCAgICAgICAgICAwdgYFYEwBCgIxbRNrRXNhLWVzY29sYSBTdXBlcmlvciBkZSBBZHZvY2FjaWEgICAgICAgIFBPU19HUkFEVUFDQU9fTEVzcGVjaWFsaXphY2FvIGVtIEFkdm9jYWNpYSBUclNhbyBMdWlzICAgICAgICAgICAgTUEwCwYFYEwBBAMxAhMAMHQwMAYDVR0fBCkwJ6ElhiNodHRwczovL2FucGcuZG5lLnZjL3YxL2NybC9hbnBnLmNybDAdBgNVHSMEFoAUp6WdTBVheb8yYheJBppCYUqN1dwwIQYIKwYBBQUHAQEEFTATBggrBgEFBQcwAgQHhgVIVFRQUzANBgkqhkiG9w0BAQUFAAOCAQEAMRE4Tw8PfIoAFIOeXbBtKqOO/KTI4uizH0mCfGO+ZATXUYsP23stnYCel5XROTjJ4Fw5V7o0jEwBv9GbFtxG1a4r+pDbs2S3/G2WEvy79FRfB/J/y3EVgnr1m0qX0H4gWtZhC+28cxgEoF2BWPcWmxRhtAJMYZSfj6z10GV2xIn1FL2r9zb9liWgPiljY0mJJpZJmaTmSHEOKFW1MDox3jhT9fYZP9OB5crWuQ1hrkcINHqucNiJ5WUs+bOl0sZgcQw7xrTEzwURZ4m88KTk2QMBodBDE5/P5d1vEwMWHyQ1bRhJhW7hVbuKe4crzVchstlObmsgJs6SG6xK46vpXA==</span>
+                <span>-----END CERTIFICATE-----</span>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <span class="footer-text">meiaentrada.org.br</span>
+        <div class="footer-menu">
+            <div class="footer-column">
+                <a href="https://www.meiaentrada.org.br">Home</a>
+                <a href="https://www.meiaentrada.org.br/lei">Lei da Meia-entrada</a>
+                <a href="https://www.meiaentrada.org.br/lei">Chaves públicas</a>
+                <a href="https://www.meiaentrada.org.br/perguntas-e-respostas">FAQ</a>
+            </div>
+            <div class="footer-column">
+                <a href="https://www.meiaentrada.org.br/noticias">Notícias</a>
+                <a href="https://www.meiaentrada.org.br/termos">Termos de Uso e Política de Privacidade</a>
+            </div>
+        </div>
+        <span class="footer-rights">@Meiaentrada.org.br - Todos os Direitos Reservados 2026</span>
+    </div>
+</body>
+</html>
